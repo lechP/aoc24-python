@@ -1,7 +1,7 @@
 import unittest
 
 from solutions.common.readers import read
-from solutions.day11.solution_day11 import process_list, solution_day11
+from solutions.day11.solution_day11 import process_list, solution_day11, solution_day11_part2
 
 
 class TestDay11Unit(unittest.TestCase):
@@ -20,14 +20,21 @@ class TestDay11Solution(unittest.TestCase):
         _input = read("input.txt")
         print(solution_day11(_input))
 
-    # def test_total_calibration_result_v2(self):
-    #     input_test_1 = read_strings("test1.txt")
-    #     self.assertEqual(81, solution_day10_part2(input_test_1))
-    #
-    # def test_result_on_real_input_part2(self):
-    #     _input = read_strings("input.txt")
-    #     print(solution_day10_part2(_input))
+    def test_result_on_real_input_part2(self):
+        _input = read("input.txt")
+        print(solution_day11_part2(_input))
 
 
 if __name__ == '__main__':
     unittest.main()
+
+
+#0
+#1
+#2024
+#20 24
+#2 0 2 4
+#4048 1 4048 8096
+# 40 48 2024 40 48 80 96
+# 4 0 4 8 20 24 4 0 4 8 8 0 9 6
+# 8096 1 8096 16192 2 0 2 4 8096 1 8096 16192 16192 18216 12144
