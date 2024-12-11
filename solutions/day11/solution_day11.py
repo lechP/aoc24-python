@@ -1,3 +1,6 @@
+from collections import Counter
+
+
 def process_num(num: int) -> list[int]:
     if num == 0:
         return [1]
@@ -53,10 +56,11 @@ def process_num_v2(num: int, loops: int) -> int:
 
 def solution_day11_part2(data) -> int:
     nums = list(map(int, data.split(" ")))
-    total = 0
-    for num in nums:
-        total += process_num_with_memo(num, 75)
-    return total
+    # total = 0
+    # for num in nums:
+    #     total += process_num_with_memo(num, 75)
+    # return total
+    return process_num_v4(nums, 75)
 
 
 # third approach using memoization
@@ -81,3 +85,31 @@ def process_num_with_memo(num: int, loops: int) -> int:
 
     cache[key] = res
     return res
+
+
+# fourth approach using Counter, no recursion
+def process_num_v4(initial_stones, num_blinks):
+
+    # Use a Counter to track stone values and their counts
+    stone_counts = Counter(initial_stones)
+
+    for _ in range(num_blinks):
+        new_stone_counts = Counter()
+        for stone, count in stone_counts.items():
+            if stone == 0:
+                # Rule 1: Replace 0 with 1
+                new_stone_counts[1] += count
+            elif len(str(stone)) % 2 == 0:
+                # Rule 2: Split even-digit stone into two stones
+                digits = str(stone)
+                mid = len(digits) // 2
+                left = int(digits[:mid])
+                right = int(digits[mid:])
+                new_stone_counts[left] += count
+                new_stone_counts[right] += count
+            else:
+                # Rule 3: Multiply stone by 2024
+                new_stone_counts[stone * 2024] += count
+        stone_counts = new_stone_counts
+
+    return sum(stone_counts.values())
