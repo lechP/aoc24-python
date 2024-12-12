@@ -26,9 +26,10 @@ def get_region(pos: tuple[int, int], kind: str) -> list[tuple[int, int]]:
 def price(region: list[tuple[int, int]]) -> int:
     area = len(region)
     perimeter = 0
-    for position in region:
+    region_set = set(region)
+    for position in region_set:
         for d in dirs(position):
-            if d not in region:
+            if d not in region_set:
                 perimeter += 1
     return area * perimeter
 
