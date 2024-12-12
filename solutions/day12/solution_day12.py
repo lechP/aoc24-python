@@ -47,4 +47,47 @@ def solution_day12(data) -> int:
 
 
 def solution_day12_part2(data) -> int:
-    return 0
+    regions = get_regions(data)
+    return sum([price_v2(region) for region in regions])
+
+def price_v2(region: list[tuple[int, int]]) -> int:
+    area = len(region)
+    sides = 0
+    borders = []
+    # build list of borders as tuples (inside, outside)
+    for position in region:
+        for d in dirs(position):
+            if d not in region:
+                borders.append((position, d))
+
+    while len(borders) > 0:
+        border = borders.pop()
+        inside, outside = border
+        dx = outside[0] - inside[0]
+        dy = outside[1] - inside[1]
+        # check neighbours in line (either x or y) and if they occur in borders, remove them
+        if dx != 0:
+            candidate_plus = ((inside[0], inside[1]+dx), (outside[0], outside[1]+dx))
+            candidate_minus = ((inside[0], inside[1]-dx), (outside[0], outside[1]-dx))
+            while candidate_plus in borders:
+                borders.remove(candidate_plus)
+                inside, outside = candidate_plus
+                candidate_plus = ((inside[0], inside[1]+dx), (outside[0], outside[1]+dx))
+            while candidate_minus in borders:
+                borders.remove(candidate_minus)
+                inside, outside = candidate_minus
+                candidate_minus = ((inside[0], inside[1]-dx), (outside[0], outside[1]-dx))
+        if dy != 0:
+            candidate_plus = ((inside[0]+dy, inside[1]), (outside[0]+dy, outside[1]))
+            candidate_minus = ((inside[0]-dy, inside[1]), (outside[0]-dy, outside[1]))
+            while candidate_plus in borders:
+                borders.remove(candidate_plus)
+                inside, outside = candidate_plus
+                candidate_plus = ((inside[0]+dy, inside[1]), (outside[0]+dy, outside[1]))
+            while candidate_minus in borders:
+                borders.remove(candidate_minus)
+                inside, outside = candidate_minus
+                candidate_minus = ((inside[0]-dy, inside[1]), (outside[0]-dy, outside[1]))
+        # increase number of sides after removal of all "members" of the side
+        sides += 1
+    return area * sides
