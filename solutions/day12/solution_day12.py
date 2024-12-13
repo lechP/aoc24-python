@@ -56,9 +56,10 @@ def price_v2(region: list[tuple[int, int]]) -> int:
     sides = 0
     borders = []
     # build list of borders as tuples (inside, outside)
+    region_set = set(region)
     for position in region:
         for d in dirs(position):
-            if d not in region:
+            if d not in region_set:
                 borders.append((position, d))
 
     while len(borders) > 0:
