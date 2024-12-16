@@ -1,7 +1,11 @@
-def parse_input(data: str):
+def split_input(data: str):
     grid, steps = data.split("\n\n")
     grid = grid.split("\n")
     steps = steps.replace("\n","")
+    return grid, steps
+
+def parse_input(data: str):
+    grid, steps = split_input(data)
 
     objects = {}
     botpos = None
@@ -15,6 +19,28 @@ def parse_input(data: str):
                 objects[(i, j)] = grid[i][j]
             if grid[i][j] == bot:
                 botpos = (i, j)
+
+    return objects, botpos, steps
+
+def parse_input_v2(data: str):
+    grid, steps = split_input(data)
+
+    objects = {}
+    botpos = None
+
+    rows = len(grid)
+    cols = len(grid[0])
+
+    for i in range(rows):
+        for j in range(cols):
+            if grid[i][j] == box:
+                objects[(i, 2*j)] = box_l
+                objects[(i, 2*j+1)] = box_r
+            elif grid[i][j] == wall:
+                objects[(i, 2*j)] = wall
+                objects[(i, 2*j+1)] = wall
+            elif grid[i][j] == bot:
+                botpos = (i, 2*j)
 
     return objects, botpos, steps
 
@@ -52,12 +78,12 @@ def solution_day15(data) -> int:
 
     # print_grid(objects, botpos)
 
-    return count_gps(objects)
+    return count_gps(objects, box)
 
-def count_gps(objects: dict[tuple[int, int], str]) -> int:
+def count_gps(objects: dict[tuple[int, int], str], shape: str) -> int:
     _sum = 0
     for (i, j) in objects:
-        if objects[(i, j)] == box:
+        if objects[(i, j)] == shape:
             _sum += 100*i + j
     return _sum
 
@@ -76,4 +102,6 @@ def print_grid(objects: dict[tuple[int, int], str], botpos: tuple[int, int]):
         print()
 
 def solution_day15_part2(data) -> int:
+    objects, botpos, steps = parse_input_v2(data)
+    print_grid(objects, botpos)
     return 0
