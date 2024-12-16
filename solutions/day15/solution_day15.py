@@ -109,7 +109,7 @@ def solution_day15_part2(data) -> int:
         move = directions[step]
         newpos = (botpos[0] + move[0], botpos[1] + move[1])
         if newpos in objects:
-            if move[0] == 0: # moving left or right ; easier case
+            if move[0] == 0: # horizontal move ; easier case
                 no_walls = True
                 objnewpos = newpos
                 to_shift = {}
@@ -126,7 +126,7 @@ def solution_day15_part2(data) -> int:
                         objects.pop(prev_pos)
                     for pos in to_shift: # add the boxes to the new positions
                         objects[pos] = to_shift[pos]
-            else: # moving up or down ; more obstacles possible
+            else: # vertical move ; more obstacles possible
                 no_walls = True
                 any_objects = True
                 current_level = newpos[0]
