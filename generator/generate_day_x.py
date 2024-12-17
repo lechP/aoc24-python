@@ -1,6 +1,6 @@
 import os
 
-day_num = 16
+day_num = 17
 day_name = f"day{day_num}"
 day_name_up = f"Day{day_num}"
 

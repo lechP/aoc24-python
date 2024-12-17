@@ -75,6 +75,11 @@ def combo_value(operand: int, a: int, b: int, c: int) -> int:
 
 def solution_day17(data) -> str:
     a, b, c, instructions = parse_input(data)
+    outputs = process_program(a, b, c, instructions)
+    # return comma separated outputs
+    return ",".join(map(str, outputs))
+
+def process_program(a: int, b: int, c: int, instructions: list[int]) -> list[int]:
     index = 0
     outputs = []
     while index < len(instructions):
@@ -83,19 +88,56 @@ def solution_day17(data) -> str:
         a, b, c, index, output = process_instruction(opcode, operand, index, a, b, c)
         if output is not None:
             outputs.append(output)
-    # return comma separated outputs
-    return ",".join(map(str, outputs))
+    return outputs
 
-
-
+# will take ages ^_^
 def solution_day17_part2(data) -> int:
-    return 0
+    a, b, c, instructions = parse_input(data)
+    a = 0
+    outputs = []
+    while outputs != instructions:
+        a += 1
+        outputs = process_program(a, b, c, instructions)
+        if a % 10000 == 0:
+            print(f"Trying a={a}")
+    return a
 
+# process with hardcoded values from the input
+def process_hardcoded(a: int):
+    # instructions = [2,4,1,1,7,5,1,5,4,0,0,3,5,5,3,0]
+    outputs = []
+    while a > 0:
+        b = a % 8
+        b = b ^ 1
+        c = a // (2**b)
+        b = b ^ 5
+        b = b ^ c
+        a = a // 8
+        outputs.append(b % 8)
+    return outputs
 
-example = """Register A: 729
-Register B: 0
-Register C: 0
+# figure out that a must be in range 8^15 to 8^16 - 1
+def a_range():
+    steps = 15
+    a_min = 1
+    a_max = 7
+    for i in range(steps):
+        a_min = a_min*8
+        a_max = a_max*8 + 7
+    return a_min, a_max
 
-Program: 0,1,5,4,3,0"""
+amin, amax = a_range() #35 184 372 088 832, 281 474 976 710 655
 
-solution_day17(example)
+# perform "binary" visual search using octal notation
+out = process_hardcoded(0o4532307133267200)
+print(out)
+expected = [2,4,1,1,7,5,1,5,4,0,0,3,5,5,3,0]
+print(expected)
+print(0o4532307133267200)
+
+# being close enough to the expected output, let's check the range
+close_enough = 164541160582784
+for i in range(200):
+    if process_hardcoded(close_enough+i) == expected:
+        print(close_enough+i)
+        print(True)
