@@ -12,7 +12,7 @@ class TestDay18Unit(unittest.TestCase):
 class TestDay18Solution(unittest.TestCase):
     def test_on_test_data_part1(self):
         input_test_1 = read("test1.txt")
-        self.assertEqual(0, solution_day18(input_test_1, 12, 7))
+        self.assertEqual(22, solution_day18(input_test_1, 12, 7))
 
     def test_result_on_real_input_part1(self):
         _input = read("input.txt")
