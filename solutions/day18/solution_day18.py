@@ -48,8 +48,39 @@ def get_min_score(cache: dict[tuple[int, int], int], pos: tuple[int, int], moves
     else:
         return min(possible_next_scores)
 
-def solution_day18_part2(data) -> int:
-    return 0
+def solution_day18_part2(data: str, size: int) -> tuple[int, int]:
+    all_bytes = parse_input(data)
+    pos = (0, 0)
+    end = (size - 1, size - 1)
+    grid = set()
+    for i in range(size):
+        for j in range(size):
+                grid.add((j, i))
+    grid.remove((0,0))
+    i = 0
+    byte = all_bytes[i]
+    while True:
+        grid.remove(byte)
+        if not check_end_reachable(pos, grid.copy(), end):
+            return byte
+        i += 1
+        byte = all_bytes[i]
+
+def check_end_reachable(pos: tuple[int, int], grid: set[tuple[int, int]], end: tuple[int, int]) -> bool:
+    reachable = set()
+    to_visit = [pos]
+    while len(to_visit) > 0:
+        current = to_visit.pop()
+        if current == end:
+            return True
+        reachable.add(current)
+        for d in dirs:
+            new_pos = (current[0] + d[0], current[1] + d[1])
+            if new_pos in grid:
+                to_visit.append(new_pos)
+                grid.remove(new_pos)
+    return False
+
 
 def draw_grid(items: set[tuple[int, int]], size: int):
     for i in range(size):
