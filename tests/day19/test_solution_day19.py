@@ -10,6 +10,9 @@ class TestDay19Unit(unittest.TestCase):
         input_test_1 = read("test1.txt")
         towels, patterns = parse_input(input_test_1)
         self.assertEqual(2, possible_ways(patterns[0], towels))
+        self.assertEqual(1, possible_ways(patterns[1], towels))
+        self.assertEqual(4, possible_ways(patterns[2], towels))
+        self.assertEqual(6, possible_ways(patterns[3], towels))
 
 class TestDay19Solution(unittest.TestCase):
     def test_on_test_data_part1(self):
